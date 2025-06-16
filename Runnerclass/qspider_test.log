@@ -1,0 +1,1 @@
+2025-06-15 12:26:43 WARNING  selenium.webdriver.common.selenium_manager:137 Exception managing chrome: error sending request for url (https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json)
