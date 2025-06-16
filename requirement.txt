@@ -74,3 +74,43 @@ rp_launch_description = "Advanced UI Test Report"
 
 
 pytest --reportportal
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pip install pytest-xdist
