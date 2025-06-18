@@ -1,0 +1,5 @@
+pytest
+selenium
+pytest
+pytest-html
+

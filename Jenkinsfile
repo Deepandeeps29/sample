@@ -2,34 +2,27 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout Code') {
-            steps {
-                git 'git@github.com:Deepandeeps29/CICD_1.git'
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
-                sh 'python3 -m pip install --upgrade pip'
-                sh 'pip3 install -r requirements.txt'
+                bat 'pip install -r requirements.txt'
             }
         }
 
-        stage('Run Pytest') {
+        stage('Run Tests') {
             steps {
-                sh 'pytest --html=report.html --self-contained-html'
+                bat 'pytest --html=report.html'
             }
         }
 
-        stage('Publish Report') {
+        stage('Push Report to GitHub') {
             steps {
-                publishHTML (target: [
-                    reportName : 'Pytest HTML Report',
-                    reportDir: '.',
-                    reportFiles: 'report.html',
-                    alwaysLinkToLastBuild: true,
-                    keepAll: true
-                ])
+                bat '''
+                    git config --global user.email "deepanvinayagam2912@gmail.com"
+                    git config --global user.name "Deepandeeps29"
+                    git add report.html
+                    git commit -m "Updated test report with radio page"
+                    git push origin main
+                '''
             }
         }
     }
