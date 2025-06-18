@@ -2,4 +2,5 @@ pytest
 selenium
 pytest
 pytest-html
+psycopg2
 
