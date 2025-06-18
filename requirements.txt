@@ -3,4 +3,6 @@ selenium
 pytest
 pytest-html
 psycopg2
+python-dotenv
+
 
