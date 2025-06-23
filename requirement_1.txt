@@ -19,6 +19,14 @@ psycopg2-binary
 
 
 
+sender = 'deepanvinayagam1411@gmail.com'
+recipient = 'deepanvinayagam1411@gmail.com'
+subject = 'Pytest Selenium Report'
+app_password = 'bhxu nskk kmyx usyf'
+
+
+
+
 
 (.venv) D:\Program\Python_Selenium\Qspider_Demo_Module\tests>pytest test_demo_page.py
 pip install pytest-reportportal
