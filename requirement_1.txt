@@ -19,6 +19,14 @@ psycopg2-binary
 
 
 
+CI Email send
+
+pip install -r requirements.txt
+pytest --html=report.html --self-contained-html
+python send_email.py
+
+
+
 sender = 'deepanvinayagam1411@gmail.com'
 recipient = 'deepanvinayagam1411@gmail.com'
 subject = 'Pytest Selenium Report'

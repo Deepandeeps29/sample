@@ -6,7 +6,11 @@ import os
 
 def send_email():
     sender = 'deepanvinayagam1411@gmail.com'
-    recipient = 'deepanvinayagam1411@gmail.com'
+    recipient = [
+        'deepanvinayagam1411@gmail.com',
+        'deepanvinayagam2912@gmail.com',
+        'deepanvinayagam6382@gmail.com',
+    ]
     subject = 'Pytest Selenium Report'
     app_password = 'bhxu nskk kmyx usyf'
 
@@ -14,7 +18,7 @@ def send_email():
 
     msg = MIMEMultipart()
     msg['From'] = sender
-    msg['To'] = recipient
+    msg['To'] = ', '.join(recipient)
     msg['Subject'] = subject
     msg.attach(MIMEText("Test execution completed. Report attached.", 'plain'))
 
