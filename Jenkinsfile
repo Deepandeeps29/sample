@@ -29,16 +29,25 @@ pipeline {
 
     post {
         always {
+            // ✅ Debug to confirm file exists and has content
+            bat 'echo ===== File Listing ====='
             bat 'dir'
-            bat 'if exist report.html (echo ✅ File exists) else (echo ❌ report.html NOT found)'
+            bat 'echo ===== Report Preview ====='
+            bat 'type report.html'
+            bat 'if exist report.html (echo ✅ report.html FOUND) else (echo ❌ report.html NOT FOUND)'
+
+            // ✅ Send email with report.html attached
             emailext (
-                subject: "🧪 Test Report - Jenkins CI Pipeline",
-                body: '''Hi Team,<br><br>
-                         Test execution is complete. Please find the attached HTML report.<br><br>
-                         Regards,<br>Jenkins''',
+                subject: "🧪 Jenkins Test Report",
+                body: '''
+Hi Team,<br><br>
+The automated test run has completed.<br>
+Please find the attached test report below.<br><br>
+Regards,<br>Jenkins
+''',
+                mimeType: 'text/html',
                 to: 'deepanvinayagam2912@gmail.com',
-                attachmentsPattern: '**/report.html',
-                mimeType: 'text/html'
+                attachmentsPattern: '**/report.html'
             )
         }
     }
