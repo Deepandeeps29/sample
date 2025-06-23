@@ -2,6 +2,14 @@ pipeline {
     agent any
 
     stages {
+        stage('Checkout') {
+            steps {
+                git credentialsId: 'github-token',
+                url: 'https://github.com/Deepandeeps29/Automation_Pratice_Site.git',
+                branch: 'main'
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
                 bat 'pip install -r requirements.txt'
@@ -10,47 +18,14 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                bat 'pytest --html=report.html'
+                bat 'pytest tests/test_login.py --html=report.html --self-contained-html'
             }
         }
 
-        stage('Push Report to GitHub') {
+        stage('Send Email Report via Python') {
             steps {
-                bat '''
-                    git config user.email "deepanvinayagam1411@gmail.com"
-                    git config user.name "Deepandeeps29"
-                    git add report.html
-                    git commit -m "Updated test report" || echo "No changes"
-                    git push origin HEAD:main
-                '''
+                bat 'python send_email.py'
             }
         }
     }
-
-    post {
-    always {
-        script {
-            if (!fileExists('report.html')) {
-                echo "⚠️ report.html not found, writing fallback..."
-                writeFile file: 'report.html', text: '<html><body><h1>No report generated.</h1></body></html>'
-            } else {
-                echo "✅ report.html found"
-            }
-        }
-
-        emailext(
-            subject: "🧪 Jenkins Test Report",
-            mimeType: 'text/html',
-            to: "deepanvinayagam1411@gmail.com",
-            from: "deepanvinayagam1411@gmail.com",
-            attachmentsPattern: '**/report.html',
-            body: """<html>
-                <p>Hi Team,</p>
-                <p>The Jenkins build has completed. Please find the attached test report.</p>
-                <p>Regards,<br>Jenkins</p>
-            </html>"""
-        )
-    }
-}
-
 }

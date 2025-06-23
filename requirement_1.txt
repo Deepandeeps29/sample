@@ -9,6 +9,17 @@ pip install psycopg2-binary
 pip install python-dotenv
 
 
+pytest
+selenium
+pytest-html
+psycopg2
+python-dotenv
+psycopg2-binary
+
+
+
+
+
 (.venv) D:\Program\Python_Selenium\Qspider_Demo_Module\tests>pytest test_demo_page.py
 pip install pytest-reportportal
 
