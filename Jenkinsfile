@@ -20,7 +20,7 @@ pipeline {
                     git config user.email "deepanvinayagam2912@gmail.com"
                     git config user.name "Deepandeeps29"
                     git add report.html
-                    git commit -m "Updated test report" || echo "No changes"
+                    git commit -m "Update test report" || echo "No changes to commit"
                     git push origin HEAD:main
                 '''
             }
@@ -28,16 +28,19 @@ pipeline {
     }
 
     post {
-    always {
-        emailext (
-            subject: "🧪 Jenkins Test Report",
-            body: "Hi Team,<br><br>Test completed. Please find the report attached.<br><br>Regards,<br>Jenkins",
-            from: "deepanvinayagam1411@gmail.com",          // ✅ Must match SMTP config
-            to: "deepanvinayagam1411@gmail.com",
-            attachmentsPattern: '**/report.html',
-            mimeType: 'text/html'
-        )
+        always {
+            echo 'Sending test report email...'
+            emailext (
+                subject: "🧪 Jenkins Test Report - Build #${BUILD_NUMBER}",
+                body: """Hi Team,<br><br>
+                         Test execution is complete.<br>
+                         Please find the attached test report.<br><br>
+                         Regards,<br>Jenkins""",
+                from: 'deepanvinayagam2912@gmail.com',
+                to: 'deepanvinayagam1411@gmail.com',
+                attachmentsPattern: '**/report.html',
+                mimeType: 'text/html'
+            )
+        }
     }
-}
-
 }
