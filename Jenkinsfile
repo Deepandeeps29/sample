@@ -28,19 +28,16 @@ pipeline {
     }
 
     post {
-        always {
-            bat 'if exist report.html (echo ✅ report.html found) else (echo ❌ report.html NOT found)'
-            emailext (
-                subject: "🧪 Test Report - Jenkins",
-                body: '''
-Hi Team,<br><br>
-The test run is complete. Please find the attached report.<br><br>
-Regards,<br>Jenkins
-''',
-                to: 'deepanvinayagam2912@gmail.com',
-                attachmentsPattern: '**/report.html',
-                mimeType: 'text/html'
-            )
-        }
+    always {
+        emailext (
+            subject: "🧪 Jenkins Test Report",
+            body: "Hi Team,<br><br>Test completed. Please find the report attached.<br><br>Regards,<br>Jenkins",
+            from: "deepanvinayagam1411@gmail.com",          // ✅ Must match SMTP config
+            to: "deepanvinayagam1411@gmail.com",
+            attachmentsPattern: '**/report.html',
+            mimeType: 'text/html'
+        )
     }
+}
+
 }
