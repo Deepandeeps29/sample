@@ -28,19 +28,20 @@ pipeline {
     }
 
     post {
-        always {
-            echo 'Sending test report email...'
-            emailext (
-                subject: "🧪 Jenkins Test Report - Build #${BUILD_NUMBER}",
-                body: """Hi Team,<br><br>
-                         Test execution is complete.<br>
-                         Please find the attached test report.<br><br>
-                         Regards,<br>Jenkins""",
-                from: 'deepanvinayagam1411@gmail.com',
-                to: 'deepanvinayagam1411@gmail.com',
-                attachmentsPattern: '**/report.html',
-                mimeType: 'text/html'
-            )
-        }
+    always {
+        emailext (
+            subject: "🧪 Jenkins Test Report - ${BUILD_STATUS} - Build #${BUILD_NUMBER}",
+            body: """Hi Team,<br><br>
+                     The test job <b>${JOB_NAME}</b> completed with status: <b>${BUILD_STATUS}</b>.<br>
+                     Please find the test report attached.<br><br>
+                     <b>Report:</b> <a href="${BUILD_URL}artifact/report.html">Click here</a><br><br>
+                     Regards,<br>Jenkins""",
+            from: 'deepanvinayagam2912@gmail.com',
+            to: 'deepanvinayagam1411@gmail.com',
+            attachmentsPattern: 'report.html',
+            mimeType: 'text/html'
+        )
     }
+}
+
 }
