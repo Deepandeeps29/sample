@@ -17,10 +17,10 @@ pipeline {
         stage('Push Report to GitHub') {
             steps {
                 bat '''
-                    git config user.email "deepanvinayagam2912@gmail.com"
+                    git config user.email "deepanvinayagam1411@gmail.com"
                     git config user.name "Deepandeeps29"
                     git add report.html
-                    git commit -m "Update test report" || echo "No changes to commit"
+                    git commit -m "Updated test report" || echo "No changes"
                     git push origin HEAD:main
                 '''
             }
@@ -28,20 +28,24 @@ pipeline {
     }
 
     post {
-    always {
-        emailext (
-            subject: "🧪 Jenkins Test Report - ${BUILD_STATUS} - Build #${BUILD_NUMBER}",
-            body: """Hi Team,<br><br>
-                     The test job <b>${JOB_NAME}</b> completed with status: <b>${BUILD_STATUS}</b>.<br>
-                     Please find the test report attached.<br><br>
-                     <b>Report:</b> <a href="${BUILD_URL}artifact/report.html">Click here</a><br><br>
-                     Regards,<br>Jenkins""",
-            from: 'deepanvinayagam2912@gmail.com',
-            to: 'deepanvinayagam1411@gmail.com',
-            attachmentsPattern: 'report.html',
-            mimeType: 'text/html'
-        )
-    }
-}
+        always {
+            script {
+                if (!fileExists('report.html')) {
+                    writeFile file: 'report.html', text: '<html><body><h1>No report generated. Tests might have crashed early.</h1></body></html>'
+                }
+            }
 
+            emailext (
+                subject: "🧪 Jenkins Test Report",
+                body: """<html>
+                    <p>Hi Team,</p>
+                    <p>Jenkins build has completed. See attached report.</p>
+                    <p>Regards,<br>Jenkins</p>
+                    </html>""",
+                mimeType: 'text/html',
+                to: "deepanvinayagam1411@gmail.com",
+                attachmentsPattern: 'report.html'
+            )
+        }
+    }
 }
