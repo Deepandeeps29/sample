@@ -26,4 +26,17 @@ pipeline {
             }
         }
     }
+
+    post {
+        always {
+            emailext (
+                subject: "🧪 Test Report - Jenkins CI Pipeline",
+                body: "Hi Team,<br><br>Test execution is complete. Please find the attached HTML report.<br><br>Regards,<br>Jenkins",
+                recipientProviders: [[$class: 'DevelopersRecipientProvider']],
+                attachmentsPattern: 'report.html',
+                mimeType: 'text/html',
+                to: 'member1@example.com, member2@example.com'
+            )
+        }
+    }
 }
