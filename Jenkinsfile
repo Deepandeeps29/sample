@@ -17,11 +17,11 @@ pipeline {
         stage('Push Report to GitHub') {
             steps {
                 bat '''
-                    git config --global user.email "deepanvinayagam2912@gmail.com"
-                    git config --global user.name "Deepandeeps29"
+                    git config user.email "deepanvinayagam2912@gmail.com"
+                    git config user.name "Deepandeeps29"
                     git add report.html
-                    git commit -m "Updated test report with radio page"
-                    git push origin main
+                    git commit -m "Updated test report with radio page" || echo "No changes to commit"
+                    git push origin HEAD:main
                 '''
             }
         }
