@@ -37,7 +37,7 @@ pipeline {
                          Please find the attached test report.<br><br>
                          Regards,<br>Jenkins""",
                 from: 'deepanvinayagam1411@gmail.com',
-                to: 'deepanvinayagam2912@gmail.com',
+                to: 'deepanvinayagam1411@gmail.com',
                 attachmentsPattern: '**/report.html',
                 mimeType: 'text/html'
             )
