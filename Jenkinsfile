@@ -29,6 +29,7 @@ pipeline {
 
     post {
     always {
+        bat 'dir'  // Shows files present — useful debug step
         emailext (
             subject: "🧪 Test Report - Jenkins CI Pipeline",
             body: '''Hi Team,<br><br>
@@ -40,5 +41,6 @@ pipeline {
         )
     }
 }
+
 
 }
