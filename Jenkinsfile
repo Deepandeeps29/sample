@@ -28,27 +28,29 @@ pipeline {
     }
 
     post {
-        always {
-            script {
-                if (!fileExists('report.html')) {
-                    writeFile file: 'report.html', text: '<html><body><h1>No report generated</h1></body></html>'
-                }
+    always {
+        script {
+            if (!fileExists('report.html')) {
+                echo "⚠️ report.html not found, writing fallback..."
+                writeFile file: 'report.html', text: '<html><body><h1>No report generated.</h1></body></html>'
+            } else {
+                echo "✅ report.html found"
             }
-
-            emailext (
-                subject: "🧪 Jenkins Test Report",
-                body: """
-                    <html>
-                        <p>Hi Team,</p>
-                        <p>Jenkins build has completed. See attached report.</p>
-                        <p>Regards,<br>Jenkins</p>
-                    </html>
-                """,
-                mimeType: 'text/html',
-                to: 'deepanvinayagam1411@gmail.com',
-                from: 'deepanvinayagam1411@gmail.com',
-                attachmentsPattern: 'report.html'
-            )
         }
+
+        emailext(
+            subject: "🧪 Jenkins Test Report",
+            mimeType: 'text/html',
+            to: "deepanvinayagam1411@gmail.com",
+            from: "deepanvinayagam1411@gmail.com",
+            attachmentsPattern: '**/report.html',
+            body: """<html>
+                <p>Hi Team,</p>
+                <p>The Jenkins build has completed. Please find the attached test report.</p>
+                <p>Regards,<br>Jenkins</p>
+            </html>"""
+        )
     }
+}
+
 }
