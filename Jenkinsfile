@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git credentialsId: 'github-token',
-                    url: 'https://github.com/Deepandeeps29/sample.git',
+                    url: 'https://github.com/Deepandeeps29/Sample.git',
                     branch: 'main'
             }
         }
@@ -29,8 +29,8 @@ pipeline {
         stage('Archive and Email Report') {
             steps {
                 script {
-                    archiveArtifacts artifacts: 'report.html', onlyIfSuccessful: true
-                    emailext (
+                    archiveArtifacts artifacts: "${REPORT_FILE}", onlyIfSuccessful: true
+                    emailext(
                         subject: "🧪 Selenium Test Report - Build #${BUILD_NUMBER}",
                         body: """
                             <p>Hello Team,</p>
@@ -40,7 +40,7 @@ pipeline {
                         to: 'deepanvinayagam1411@gmail.com',
                         from: 'deepanvinayagam1411@gmail.com',
                         attachLog: false,
-                        attachmentsPattern: 'report.html'
+                        attachmentsPattern: "${REPORT_FILE}"
                     )
                 }
             }
@@ -49,7 +49,7 @@ pipeline {
 
     post {
         always {
-            echo "Pipeline finished. Report generated and email sent using Jenkins email plugin."
+            echo "✅ Pipeline finished. Report generated and email sent."
         }
     }
 }
