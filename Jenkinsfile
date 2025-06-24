@@ -31,7 +31,7 @@ pipeline {
                 subject: "🧪 Test Report - Pytest Results",
                 body: """Hello,<br><br>The test execution has completed.<br>Please find the attached report.<br><br>Regards,<br>Jenkins""",
                 mimeType: 'text/html',
-                to: 'your_email@gmail.com',
+                to: 'deepanvinayagam1411@gmail.com',
                 attachmentsPattern: 'report.html'
             )
             archiveArtifacts artifacts: 'report.html', fingerprint: true
