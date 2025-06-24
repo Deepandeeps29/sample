@@ -26,20 +26,16 @@ pipeline {
     }
 
     post {
-        failure {
+        always {
             emailext (
-                subject: "Test Failed - Pytest Report",
-                body: "Hello,<br><br>Pytest automation test failed. Find the attached HTML report.<br><br>Regards,<br>Jenkins",
+                subject: "🧪 Test Report - Pytest Results",
+                body: """Hello,<br><br>The test execution has completed.<br>Please find the attached report.<br><br>Regards,<br>Jenkins""",
                 mimeType: 'text/html',
-                to: 'deepanvinayagam1411@gmail.com',
+                to: 'your_email@gmail.com',
                 attachmentsPattern: 'report.html'
             )
-        }
-        success {
-            echo "Tests passed, no email sent."
-        }
-        always {
             archiveArtifacts artifacts: 'report.html', fingerprint: true
         }
     }
+
 }
