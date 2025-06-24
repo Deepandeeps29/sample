@@ -2,17 +2,19 @@ pipeline {
     agent any
 
     environment {
-        REPORT_FILE = "report.html"
+        REPORT_FILE = 'report.html'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'github-token', url: 'https://github.com/Deepandeeps29/sample.git', branch: 'main'
+                git credentialsId: 'github-token',
+                    url: 'https://github.com/Deepandeeps29/Automation_Pratice_Site.git',
+                    branch: 'main'
             }
         }
 
-        stage('Install Requirements') {
+        stage('Install Dependencies') {
             steps {
                 bat 'pip install -r requirements.txt'
             }
@@ -20,22 +22,37 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                bat 'pytest --html=report.html --self-contained-html'
+                bat "pytest tests/test_login.py --html=${REPORT_FILE} --self-contained-html"
+            }
+        }
+
+        stage('Archive and Email Report') {
+            steps {
+                script {
+                    // Archive the report for Jenkins UI
+                    archiveArtifacts artifacts: "${REPORT_FILE}", onlyIfSuccessful: true
+
+                    // Send email with the report attached
+                    emailext (
+                        subject: "🧪 Selenium Test Report - Build #${BUILD_NUMBER}",
+                        body: """
+                            <p>Hello Team,</p>
+                            <p>Please find the attached <b>HTML Test Report</b> for Jenkins Build #${BUILD_NUMBER}.</p>
+                            <p>Regards,<br>Jenkins</p>
+                        """,
+                        to: 'deepanvinayagam1411@gmail.com',
+                        from: 'deepanvinayagam1411@gmail.com',
+                        attachLog: false,
+                        attachmentsPattern: "${REPORT_FILE}"
+                    )
+                }
             }
         }
     }
 
     post {
         always {
-            emailext (
-                subject: "🧪 Test Report - Pytest Results",
-                body: """Hello,<br><br>The test execution has completed.<br>Please find the attached report.<br><br>Regards,<br>Jenkins""",
-                mimeType: 'text/html',
-                to: 'deepanvinayagam1411@gmail.com',
-                attachmentsPattern: 'report.html'
-            )
-            archiveArtifacts artifacts: 'report.html', fingerprint: true
+            echo "✅ Pipeline finished. Report generated and email sent using Jenkins email plugin."
         }
     }
-
 }
