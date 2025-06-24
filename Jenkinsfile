@@ -27,13 +27,6 @@ pipeline {
             }
         }
 
-        stage('Send Email Report via Python') {
-            steps {
-                // Check if the report file exists before sending
-                bat 'if exist report.html python send_email.py'
-            }
-        }
-
         stage('Archive Report (Optional UI Access)') {
             steps {
                 archiveArtifacts artifacts: 'report.html', onlyIfSuccessful: true
