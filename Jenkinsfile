@@ -6,7 +6,6 @@ pipeline {
     }
 
     stages {
-
         stage('Checkout') {
             steps {
                 git credentialsId: 'github-token',
@@ -27,7 +26,7 @@ pipeline {
             }
         }
 
-        stage('Archive Report (Optional UI Access)') {
+        stage('Archive and Publish Report') {
             steps {
                 archiveArtifacts artifacts: 'report.html', onlyIfSuccessful: true
                 publishHTML([
@@ -45,7 +44,14 @@ pipeline {
             steps {
                 emailext (
                     subject: "🧪 Test Report - Jenkins Build #${BUILD_NUMBER}",
-                    body: "Hello Team,<br><br>Please find the attached <b>HTML Test Report</b> for Jenkins Build #${BUILD_NUMBER}.<br><br>Regards,<br>Jenkins",
+                    body: """
+                        <p>Hello Team,</p>
+                        <p>Please find the attached <b>HTML Test Report</b> for Jenkins Build #${BUILD_NUMBER}.</p>
+                        <p><a href="${BUILD_URL}HTML_Report">Click here to view the report</a></p>
+                        <br>
+                        <p>Regards,<br>Jenkins</p>
+                    """,
+                    mimeType: 'text/html',
                     to: 'deepanvinayagam2912@gmail.com',
                     from: 'deepanvinayagam2912@gmail.com',
                     attachLog: false,
@@ -57,7 +63,7 @@ pipeline {
 
     post {
         always {
-            echo "📨 Pipeline finished. Email report was sent using Python script if available."
+            echo "📨 Pipeline finished. HTML report sent via Jenkins email."
         }
     }
 }
