@@ -3,6 +3,9 @@ pipeline {
 
     environment {
         REPORT_FILE = 'report.html'
+        DEPLOY_USER = 'deepan'                 // replace with your server's username
+        DEPLOY_HOST = '192.168.68.115'                 // replace with your server's IP
+        DEPLOY_PATH = '/var/www/html/'               // path where report.html should be deployed
     }
 
     stages {
@@ -45,11 +48,20 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy to Server') {
+            steps {
+                script {
+                    // Unix shell
+                    sh "scp -o StrictHostKeyChecking=no ${REPORT_FILE} ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}"
+                }
+            }
+        }
     }
 
     post {
         always {
-            echo "✅ Pipeline finished. Report generated and email sent."
+            echo "Pipeline finished. Report generated, emailed, and deployed."
         }
     }
 }
